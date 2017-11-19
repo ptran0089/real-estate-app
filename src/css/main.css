@@ -302,15 +302,13 @@ body {
             #content-area #listings #listings-area .listing .image .details .bedroom-details {
               margin-bottom: 15px; }
             #content-area #listings #listings-area .listing .image .details .view-listings {
-              background: #0C002B;
               width: 120px;
               height: 30px;
-              border-radius: 5px;
-              text-align: center;
-              padding-top: 6px;
               margin-bottom: 20px;
-              justify-self: center;
-              align-self: end;
+              padding-top: 6px;
+              border-radius: 5px;
+              background: #0C002B;
+              text-align: center;
               transition: all .2s; }
               #content-area #listings #listings-area .listing .image .details .view-listings:hover {
                 background: #FF718E;
@@ -345,65 +343,6 @@ body {
 #content-area > div:nth-child(even) {
   background: grey; }
 
-.form-container {
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  margin-top: 20px; }
-  .form-container .listing-form {
-    display: grid;
-    justify-items: center;
-    width: 450px;
-    padding: 20px 60px 60px 60px;
-    border-radius: 5px;
-    background: #FFFEFF; }
-    .form-container .listing-form h1 {
-      padding: 15px;
-      font-size: 1.4rem;
-      justify-self: center;
-      text-align: center; }
-    .form-container .listing-form h2 {
-      margin: 10px; }
-    .form-container .listing-form input[type="text"],
-    .form-container .listing-form input[type="number"],
-    .form-container .listing-form select {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 5px 10px;
-      border-radius: 4px;
-      border: 1px solid #828d9d;
-      outline: none;
-      font-size: .9rem;
-      font-weight: 300; }
-      .form-container .listing-form input[type="text"]:focus,
-      .form-container .listing-form input[type="number"]:focus,
-      .form-container .listing-form select:focus {
-        -webkit-box-shadow: 0px 0px 10px -2px #0c002b;
-        -moz-box-shadow: 0px 0px 10px -2px #0c002b;
-        box-shadow: 0px 0px 10px -2px #0c002b; }
-    .form-container .listing-form label {
-      display: block;
-      width: 100%;
-      font-size: 1rem;
-      font-weight: 400; }
-    .form-container .listing-form input[type="checkbox"] {
-      float: right;
-      vertical-align: top; }
-    .form-container .listing-form button {
-      display: block;
-      width: 100%;
-      margin-top: 15px;
-      padding: 5px;
-      border-radius: 4px;
-      border: none;
-      font-size: 1.1rem;
-      color: white;
-      background: #0C002B; }
-      .form-container .listing-form button:hover {
-        background: #FF718E;
-        font-weight: 700;
-        cursor: pointer; }
-
 .popup {
   position: fixed;
   width: 100%;
@@ -411,3 +350,146 @@ body {
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.5); }
+  .popup .form-container {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    margin-top: 20px; }
+    .popup .form-container .listing-form {
+      display: grid;
+      justify-items: center;
+      width: 450px;
+      padding: 20px 60px 60px 60px;
+      border-radius: 5px;
+      background: #FFFEFF; }
+      .popup .form-container .listing-form h1 {
+        padding: 15px;
+        font-size: 1.4rem;
+        justify-self: center;
+        text-align: center; }
+      .popup .form-container .listing-form h2 {
+        margin: 10px; }
+      .popup .form-container .listing-form input[type="text"],
+      .popup .form-container .listing-form input[type="number"],
+      .popup .form-container .listing-form select {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        border: 1px solid #828d9d;
+        outline: none;
+        font-size: .9rem;
+        font-weight: 300; }
+        .popup .form-container .listing-form input[type="text"]:focus,
+        .popup .form-container .listing-form input[type="number"]:focus,
+        .popup .form-container .listing-form select:focus {
+          -webkit-box-shadow: 0px 0px 10px -2px #0c002b;
+          -moz-box-shadow: 0px 0px 10px -2px #0c002b;
+          box-shadow: 0px 0px 10px -2px #0c002b; }
+      .popup .form-container .listing-form label {
+        display: block;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: 400; }
+      .popup .form-container .listing-form input[type="checkbox"] {
+        float: right;
+        vertical-align: top; }
+      .popup .form-container .listing-form button {
+        display: block;
+        width: 100%;
+        margin-top: 15px;
+        padding: 5px;
+        border-radius: 4px;
+        border: none;
+        font-size: 1.1rem;
+        color: white;
+        background: #0C002B; }
+        .popup .form-container .listing-form button:hover {
+          background: #FF718E;
+          font-weight: 700;
+          cursor: pointer; }
+  .popup .listing-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    justify-content: space-around;
+    align-content: space-around;
+    grid-template-columns: repeat(24, 1fr);
+    grid-template-rows: repeat(24, 1fr);
+    background: #FAF7F5; }
+    .popup .listing-container .listing {
+      grid-column: 2 / 16;
+      grid-row: 2 / 23;
+      border-radius: 5px;
+      -webkit-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
+      -moz-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
+      box-shadow: 0px 10px 55px -5px #e0e0e0;
+      font-size: 1.2rem;
+      font-weight: 300; }
+      .popup .listing-container .listing .image {
+        width: 100%;
+        height: 80%; }
+      .popup .listing-container .listing .address {
+        float: left;
+        margin: 15px; }
+        .popup .listing-container .listing .address .city {
+          margin-left: 15px;
+          margin-top: 5px; }
+      .popup .listing-container .listing .price {
+        float: right;
+        margin: 15px; }
+      .popup .listing-container .listing .buttons {
+        display: block;
+        clear: both;
+        margin-top: 80px; }
+        .popup .listing-container .listing .buttons button {
+          width: 120px;
+          height: 35px;
+          margin: 5px;
+          border-radius: 5px;
+          border: none;
+          text-align: center;
+          font-size: 1rem;
+          font-weight: 400;
+          color: white; }
+          .popup .listing-container .listing .buttons button.edit {
+            background: orange; }
+          .popup .listing-container .listing .buttons button.delete {
+            background: red; }
+          .popup .listing-container .listing .buttons button.close {
+            background: #0C002B; }
+          .popup .listing-container .listing .buttons button:hover {
+            cursor: pointer;
+            background: #FF718E;
+            font-weight: 700; }
+    .popup .listing-container .details {
+      grid-column: 17 / 23;
+      grid-row: 4 / 5;
+      background: #FFFEFF;
+      border-radius: 5px;
+      -webkit-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
+      -moz-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
+      box-shadow: 0px 10px 55px -5px #e0e0e0; }
+      .popup .listing-container .details div {
+        margin: 10px 0 10px 10px; }
+    .popup .listing-container h1 {
+      grid-column: 17 / 23;
+      grid-row: 6 / 7;
+      padding: 10px;
+      font-size: 1.2rem;
+      font-weight: 300;
+      background: #FFFEFF; }
+    .popup .listing-container .amenities {
+      grid-column: 17 / 23;
+      grid-row: 7 / auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      font-size: .9rem;
+      background: #FFFEFF;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+      -webkit-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
+      -moz-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
+      box-shadow: 0px 10px 55px -5px #e0e0e0; }
+      .popup .listing-container .amenities div {
+        margin: 10px 0 10px 30px; }

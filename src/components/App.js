@@ -4,6 +4,8 @@ import Filter from './Filter';
 import Listings from './Listings';
 import listingsData from './data/listingsData';
 import AddListingForm from './AddListingForm';
+import ViewListing from './ViewListing';
+import EditListingForm from './EditListingForm';
 
 class App extends React.Component {
 	constructor() {
@@ -25,13 +27,23 @@ class App extends React.Component {
 			sortby: 'Lowest Price',
 			view: 'small',
 			search: '',
-			popup: false
+			popupAddForm: false,
+			popupListing: false,
+			popupEditForm: false,
+			listingId: null
 		}
+
 		this.changeState = this.changeState.bind(this);
 		this.changeView = this.changeView.bind(this);
 		this.closeAddForm = this.closeAddForm.bind(this);
 		this.openAddForm = this.openAddForm.bind(this);
 		this.addListing = this.addListing.bind(this);
+		this.viewListing = this.viewListing.bind(this);
+		this.closeListing = this.closeListing.bind(this);
+		this.deleteListing = this.deleteListing.bind(this);
+		this.closeEditForm = this.closeEditForm.bind(this);
+		this.openEditForm = this.openEditForm.bind(this);
+		this.editListing = this.editListing.bind(this);
 	};
 
 	componentWillMount() {
@@ -55,7 +67,9 @@ class App extends React.Component {
 		let bedrooms = this.state.listingsData.map(listing => listing.bedrooms);
 		bedrooms = new Set(bedrooms);
 		bedrooms = [...bedrooms];
-		bedrooms.sort();
+		bedrooms.sort((a, b) => {
+			return a - b;
+		});
 
 		this.setState({
 			populateFormsData: {
@@ -170,26 +184,85 @@ class App extends React.Component {
 	addListing(listing) {
 		const listingsData = [...this.state.listingsData];
 
+		this.closeAddForm();
 		listingsData.push(listing);
-
 		this.setState({
 			listingsData
 		}, () => {
+			this.populateForms();
 			this.filterListings();
 		});
 
 		console.log(this.state);
 	}
 
-	closeAddForm() {
+	editListing(newListing) {
+		const listingsData = [...this.state.listingsData];
+		const index = listingsData.findIndex(listing => {
+			return listing.id === this.state.listingId;
+		});
+
+		listingsData[index] = newListing;
+		this.closeEditForm(); 
 		this.setState({
-			popup: false
+			listingsData
+		}, () => {
+			this.populateForms();
+			this.filterListings();
+		});
+	}
+
+	deleteListing(listingId) {
+		let listingsData = [...this.state.listingsData];
+		listingsData = listingsData.filter(listing => {
+			return listing.id !== listingId;
+		});
+
+		this.closeListing();
+		this.setState({
+			listingsData
+		}, () => {
+			this.filterListings();
 		});
 	}
 
 	openAddForm() {
 		this.setState({
-			popup: true
+			popupAddForm: true
+		});
+	}
+
+	closeAddForm() {
+		this.setState({
+			popupAddForm: false
+		});
+	}
+
+	viewListing(listingId) {
+		this.setState({
+			listingId,
+			popupListing: true
+		},() => {
+			this.filterListings();
+			console.log(this.state);
+		});
+	}
+
+	closeListing() {
+		this.setState({
+			popupListing: false
+		});
+	}
+
+	openEditForm() {
+		this.setState({
+			popupEditForm: true
+		});
+	}
+
+	closeEditForm() {
+		this.setState({
+			popupEditForm: false
 		});
 	}
 
@@ -199,9 +272,15 @@ class App extends React.Component {
 				<Header openAddForm={this.openAddForm} />
 				<section id="content-area">
 					<Filter globalState={this.state} changeState={this.changeState} />
-					<Listings globalState={this.state} filteredListings={this.state.filteredListings} changeView={this.changeView} changeState={this.changeState}/>
-					{this.state.popup ? 
+					<Listings viewListing={this.viewListing} globalState={this.state} filteredListings={this.state.filteredListings} changeView={this.changeView} changeState={this.changeState} />
+					{this.state.popupAddForm ? 
 						<AddListingForm closeAddForm={this.closeAddForm} addListing={this.addListing} /> : null
+					}
+					{this.state.popupListing ? 
+						<ViewListing globalState={this.state} closeListing={this.closeListing} deleteListing={this.deleteListing} openEditForm={this.openEditForm} /> : null
+					}
+					{this.state.popupEditForm ? 
+						<EditListingForm closeEditForm={this.closeEditForm} globalState={this.state} editListing={this.editListing} /> : null
 					}
 				</section>
 			</div>

@@ -2,17 +2,19 @@ import React from 'react';
 
 class AddListingForm extends React.Component {
 	createListing(event) {
+		const id = `listing${Date.now()}`;
 		event.preventDefault();
 		const listing = {
 			address: this.address.value,
 			city: this.city.value,
 			state: this.state.value,
-			bedrooms: this.bedrooms.value,
-			price: this.price.value,
-			space: this.space.value,
+			bedrooms: Number(this.bedrooms.value),
+			price: Number(this.price.value),
+			space: Number(this.space.value),
 			homeType: this.homeType.value,
 			image: this.image.value,
-			amenities: []
+			amenities: [],
+			id
 		};
 
 		if (this.elevator.checked) listing.amenities.push('elevator');
@@ -21,7 +23,6 @@ class AddListingForm extends React.Component {
 		if (this.pool.checked) listing.amenities.push('pool');
 
 		this.props.addListing(listing);
-		this.props.closeAddForm();
 	}
 
 	render() {
@@ -40,12 +41,15 @@ class AddListingForm extends React.Component {
 						<input ref={(input) => this.price = input} type="number" name="price" step="100" defaultValue="1000" required />
 						<label htmlFor="space">Space</label>	
 						<input ref={(input) => this.space = input} type="number" name="space" defaultValue="500" required />
-						<select ref={(input) => this.homeType = input} name="homeType">
-							<option value="Apartment">Apartment</option>
-							<option value="Condo">Condo</option>
-							<option value="House">House</option>
-							<option value="Room">Room</option>
-						</select>
+						<label>
+							Type
+							<select ref={(input) => this.homeType = input} name="homeType">
+								<option value="Apartment">Apartment</option>
+								<option value="Condo">Condo</option>
+								<option value="House">House</option>
+								<option value="Room">Room</option>
+							</select>
+						</label>
 						<h2>Amenities</h2>
 						<label>
 							Elevator

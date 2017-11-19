@@ -10,7 +10,8 @@ var listingsData = [
 		image: 'http://media.equityapartments.com/images/c_crop,x_0,y_0,w_1920,h_1080/c_fill,w_1920,h_1080/q_80/4206-28/the-kelvin-apartments-exterior.jpg',
 		amenities: [
 			'gym'
-		]
+		],
+		id: '1'
 	},
 	{
 		address: '221 Grand Ave',
@@ -26,7 +27,8 @@ var listingsData = [
 			'gym',
 			'jacuzzi',
 			'security'
-		]
+		],
+		id: '2'
 	},
 	{
 		address: '123 Grand Ave',
@@ -40,7 +42,8 @@ var listingsData = [
 		amenities: [
 			'elevator',
 			'gym'
-		]
+		],
+		id: '3'
 	},
 	{
 		address: '221 Grand Ave',
@@ -56,7 +59,8 @@ var listingsData = [
 			'gym',
 			'jacuzzi',
 			'security'
-		]
+		],
+		id: '4'
 	},
 	{
 		address: '123 Grand Ave',
@@ -70,7 +74,8 @@ var listingsData = [
 		amenities: [
 			'elevator',
 			'gym'
-		]
+		],
+		id: '5'
 	},
 	{
 		address: '221 Grand Ave',
@@ -86,7 +91,8 @@ var listingsData = [
 			'gym',
 			'jacuzzi',
 			'security'
-		]
+		],
+		id: '6'
 	},
 	{
 		address: '221 Grand Ave',
@@ -103,7 +109,8 @@ var listingsData = [
 			'jacuzzi',
 			'security',
 			'pool'
-		]
+		],
+		id: '7'
 	},
 	{
 		address: '221 Grand Ave',
@@ -120,7 +127,8 @@ var listingsData = [
 			'jacuzzi',
 			'security',
 			'basement'
-		]
+		],
+		id: '8'
 	},
 	{
 		address: '221 Grand Ave',
@@ -137,7 +145,8 @@ var listingsData = [
 			'jacuzzi',
 			'security',
 			'pool'
-		]
+		],
+		id: '9'
 	},
 	{
 		address: '221 Grand Ave',
@@ -154,7 +163,8 @@ var listingsData = [
 			'jacuzzi',
 			'security',
 			'basement'
-		]
+		],
+		id: '10'
 	},
 	{
 		address: '221 Grand Ave',

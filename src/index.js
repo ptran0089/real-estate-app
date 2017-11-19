@@ -8,7 +8,7 @@ import './css/main.css';
 
 const Root = () => {
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename="/real-estate-app-build/">
 			<div>
 				<Match exactly pattern="/" component={App} />
 				<Miss component={notFound} />

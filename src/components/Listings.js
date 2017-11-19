@@ -11,7 +11,7 @@ class Listings extends React.Component {
 							<div className="details">
 								<div className="space-details"><i className="fa fa-square-o" aria-hidden="true"></i> {listing.space}ft&sup2;</div>
 								<div className="bedroom-details"><i className="fa fa-bed" aria-hidden="true"></i> {listing.bedrooms} bedrooms</div>
-								<div className="view-listings">View Listings</div>
+								<div className="view-listings" onClick={() => this.props.viewListing(listing.id)}>View Listings</div>
 							</div>
 						</div>
 						<div className="info">

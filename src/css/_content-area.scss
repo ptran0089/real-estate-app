@@ -186,15 +186,13 @@
 				  		}
 
 						.view-listings {
-							background: $darkpurple;
 							width: 120px;
 							height: 30px;
-							border-radius: 5px;
-							text-align: center;
-							padding-top: 6px;
 							margin-bottom: 20px;
-							justify-self: center;
-							align-self: end;
+							padding-top: 6px;
+							border-radius: 5px;
+							background: $darkpurple;
+							text-align: center;
 							transition: all .2s;
 
 							&:hover {
