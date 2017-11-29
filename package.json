@@ -2,7 +2,6 @@
   "name": "cotd",
   "version": "0.0.1",
   "private": true,
-  "homepage": "https://ptran0089.github.io/real-estate-app-build/",
   "devDependencies": {
     "autoprefixer-stylus": "0.10.0",
     "babel-eslint": "^7.1.1",
@@ -15,13 +14,15 @@
     "stylus": "0.54.5"
   },
   "dependencies": {
+    "firebase": "^4.6.2",
     "history": "4.2.0",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.1.2",
-    "re-base": "2.2.0",
+    "re-base": "^2.2.0",
     "react": "15.3.2",
     "react-addons-css-transition-group": "15.3.2",
     "react-dom": "15.3.2",
+    "react-modal": "^3.1.4",
     "react-router": "4.0.0-alpha.4"
   },
   "scripts": {

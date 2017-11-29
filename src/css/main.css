@@ -134,7 +134,7 @@ body {
   box-sizing: border-box; }
 
 #header {
-  background: #0C002B;
+  background: #0c002b;
   height: 55px;
   color: white;
   display: grid;
@@ -151,19 +151,21 @@ body {
       text-decoration: none;
       margin: 15px; }
       #header nav a:hover {
-        color: #FF718E; }
+        color: #ff718e; }
       #header nav a:nth-last-child(1) {
-        background: #FF718E;
+        background: #ff718e;
         padding: 7px 25px;
         border-radius: 5px; }
         #header nav a:nth-last-child(1):hover {
-          color: white; }
+          color: white;
+          font-weight: 500;
+          background: rgba(255, 113, 142, 0.95); }
 
 #content-area {
   display: grid;
   grid-template-columns: 20% 80%; }
   #content-area #filter {
-    background: #FAF7F5;
+    background: #faf7f5;
     height: 700px; }
     #content-area #filter .container {
       width: 100%;
@@ -189,12 +191,28 @@ body {
         margin-top: 15px;
         padding: 5px;
         border-radius: 5px;
+        outline: none;
         font-size: 1rem; }
       #content-area #filter .container input[type="checkbox"] {
         float: right;
         vertical-align: top; }
+      #content-area #filter .container .reset {
+        width: 120px;
+        height: 35px;
+        display: inline-block;
+        margin: 20px 0 0 60px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        background: #0c002b;
+        color: white;
+        font-size: 1rem; }
+        #content-area #filter .container .reset:hover {
+          background: #ff718e;
+          font-weight: 700;
+          cursor: pointer; }
   #content-area #listings {
-    background: #FFFEFF;
+    background: #fffeff;
     width: 100%; }
     #content-area #listings #search {
       width: 70%;
@@ -285,7 +303,7 @@ body {
             left: 0;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
-            background: #FF718E;
+            background: #ff718e;
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#5c27c6+0,cc81ea+100 */
             background: #5c27c6;
             /* Old browsers */
@@ -307,11 +325,11 @@ body {
               margin-bottom: 20px;
               padding-top: 6px;
               border-radius: 5px;
-              background: #0C002B;
+              background: #0c002b;
               text-align: center;
               transition: all .2s; }
               #content-area #listings #listings-area .listing .image .details .view-listings:hover {
-                background: #FF718E;
+                background: #ff718e;
                 cursor: pointer; }
         #content-area #listings #listings-area .listing .info {
           height: 100px; }
@@ -335,7 +353,7 @@ body {
           background: #fff;
           padding: 20px 30px; }
           #content-area #listings #pagination .pages li.active, #content-area #listings #pagination .pages li:hover {
-            background: #FF718E;
+            background: #ff718e;
             color: white;
             font-weight: 700;
             cursor: pointer; }
@@ -349,7 +367,8 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5); }
+  background: rgba(0, 0, 0, 0.5);
+  overflow: scroll; }
   .popup .form-container {
     display: grid;
     justify-items: center;
@@ -361,7 +380,7 @@ body {
       width: 450px;
       padding: 20px 60px 60px 60px;
       border-radius: 5px;
-      background: #FFFEFF; }
+      background: #fffeff; }
       .popup .form-container .listing-form h1 {
         padding: 15px;
         font-size: 1.4rem;
@@ -403,9 +422,9 @@ body {
         border: none;
         font-size: 1.1rem;
         color: white;
-        background: #0C002B; }
+        background: #0c002b; }
         .popup .form-container .listing-form button:hover {
-          background: #FF718E;
+          background: #ff718e;
           font-weight: 700;
           cursor: pointer; }
   .popup .listing-container {
@@ -416,7 +435,7 @@ body {
     align-content: space-around;
     grid-template-columns: repeat(24, 1fr);
     grid-template-rows: repeat(24, 1fr);
-    background: #FAF7F5; }
+    background: #faf7f5; }
     .popup .listing-container .listing {
       grid-column: 2 / 16;
       grid-row: 2 / 23;
@@ -453,19 +472,22 @@ body {
           font-weight: 400;
           color: white; }
           .popup .listing-container .listing .buttons button.edit {
+            margin-left: 10px;
             background: orange; }
           .popup .listing-container .listing .buttons button.delete {
             background: red; }
           .popup .listing-container .listing .buttons button.close {
-            background: #0C002B; }
+            margin-right: 10px;
+            float: right;
+            background: #0c002b; }
           .popup .listing-container .listing .buttons button:hover {
             cursor: pointer;
-            background: #FF718E;
-            font-weight: 700; }
+            font-weight: 700;
+            opacity: 0.8; }
     .popup .listing-container .details {
       grid-column: 17 / 23;
       grid-row: 4 / 5;
-      background: #FFFEFF;
+      background: #fffeff;
       border-radius: 5px;
       -webkit-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
       -moz-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);
@@ -478,14 +500,14 @@ body {
       padding: 10px;
       font-size: 1.2rem;
       font-weight: 300;
-      background: #FFFEFF; }
+      background: #fffeff; }
     .popup .listing-container .amenities {
       grid-column: 17 / 23;
       grid-row: 7 / auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       font-size: .9rem;
-      background: #FFFEFF;
+      background: #fffeff;
       border-bottom-right-radius: 5px;
       border-bottom-left-radius: 5px;
       -webkit-box-shadow: 0px 10px 55px -5px rgba(224, 224, 224, 0.8);

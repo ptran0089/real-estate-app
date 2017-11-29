@@ -6,12 +6,16 @@ import listingsData from './data/listingsData';
 import AddListingForm from './AddListingForm';
 import ViewListing from './ViewListing';
 import EditListingForm from './EditListingForm';
+import SignInForm from './SignInForm';
+import RegisterForm from './RegisterForm';
+import base from '../base';
+import firebase from '../firebase';
 
 class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			listingsData,
+			listingsData: [],
 			city: 'All',
 			homeType: 'All',
 			bedrooms: 1,
@@ -21,35 +25,67 @@ class App extends React.Component {
 			max_space: 100000,
 			elevator: false,
 			pool: false,
-			basement: false,
+			jacuzzi: false,
 			gym: false,
-			filteredListings: listingsData,
+			filteredListings: {},
+			populateFormsData: {
+				homeTypes: [],
+				bedrooms: [],
+				cities: []
+			},
 			sortby: 'Lowest Price',
 			view: 'small',
 			search: '',
 			popupAddForm: false,
 			popupListing: false,
 			popupEditForm: false,
-			listingId: null
+			popupRegisterForm: false,
+			popupSignInForm: false,
+			listingId: null,
+			uid: null
 		}
 
 		this.changeState = this.changeState.bind(this);
 		this.changeView = this.changeView.bind(this);
-		this.closeAddForm = this.closeAddForm.bind(this);
-		this.openAddForm = this.openAddForm.bind(this);
 		this.addListing = this.addListing.bind(this);
-		this.viewListing = this.viewListing.bind(this);
-		this.closeListing = this.closeListing.bind(this);
 		this.deleteListing = this.deleteListing.bind(this);
-		this.closeEditForm = this.closeEditForm.bind(this);
-		this.openEditForm = this.openEditForm.bind(this);
 		this.editListing = this.editListing.bind(this);
+		this.viewListing = this.viewListing.bind(this);
+		this.resetFilter = this.resetFilter.bind(this);
+		this.loadSampleListings = this.loadSampleListings.bind(this);
+		this.openPopup = this.openPopup.bind(this);
+		this.closePopup = this.closePopup.bind(this);
+		this.handleRegistration = this.handleRegistration.bind(this);
+		this.handleSignIn = this.handleSignIn.bind(this);
+		this.handleSignOut = this.handleSignOut.bind(this);
 	};
 
 	componentWillMount() {
-		this.populateForms();
-		this.state.listingsData.sort((a, b) => {
-			return a.price - b.price;
+		this.ref = base.syncState(`/`, {
+			context: this,
+			state: 'listingsData',
+			asArray: true,
+			then(data){
+				this.filterListings();
+				this.populateForms();
+				this.state.listingsData.sort((a, b) => {
+					return a.price - b.price;
+				});
+			}
+		});
+	}
+
+	fetchAndUpdate() {
+		base.fetch('/', {
+			context: this,
+			asArray: true,
+			then(data){
+				this.filterListings();
+				this.populateForms();
+				this.state.listingsData.sort((a, b) => {
+					return a.price - b.price;
+				});
+			}
 		});
 	}
 
@@ -77,8 +113,6 @@ class App extends React.Component {
 				bedrooms,
 				cities
 			}
-		}, () => {
-			console.log(this.state.populateFormsData);
 		}); 
 	}
 
@@ -103,10 +137,10 @@ class App extends React.Component {
 			});
 		}
 
-		if (this.state.basement) {
+		if (this.state.jacuzzi) {
 			filteredListings = filteredListings.filter(listing => {
 				return listing.amenities.find(amenity => {
-					return amenity === 'basement';
+					return amenity === 'jacuzzi';
 				});
 			});
 		}
@@ -169,31 +203,24 @@ class App extends React.Component {
 			[name]: value
 		}, () => {
 			this.filterListings();
-			console.log(this.state);
 		});
 	}
 
 	changeView(view) {
 		this.setState({
 			view
-		}, () => {
-			console.log(this.state);
 		});
 	}
 
 	addListing(listing) {
 		const listingsData = [...this.state.listingsData];
 
-		this.closeAddForm();
+		this.closePopup('AddForm');
 		listingsData.push(listing);
 		this.setState({
 			listingsData
-		}, () => {
-			this.populateForms();
-			this.filterListings();
 		});
-
-		console.log(this.state);
+		this.fetchAndUpdate();
 	}
 
 	editListing(newListing) {
@@ -203,13 +230,11 @@ class App extends React.Component {
 		});
 
 		listingsData[index] = newListing;
-		this.closeEditForm(); 
+		this.closePopup('EditForm'); 
 		this.setState({
 			listingsData
-		}, () => {
-			this.populateForms();
-			this.filterListings();
 		});
+		this.fetchAndUpdate();
 	}
 
 	deleteListing(listingId) {
@@ -218,24 +243,11 @@ class App extends React.Component {
 			return listing.id !== listingId;
 		});
 
-		this.closeListing();
+		this.closePopup('Listing');
 		this.setState({
 			listingsData
-		}, () => {
-			this.filterListings();
 		});
-	}
-
-	openAddForm() {
-		this.setState({
-			popupAddForm: true
-		});
-	}
-
-	closeAddForm() {
-		this.setState({
-			popupAddForm: false
-		});
+		this.fetchAndUpdate();
 	}
 
 	viewListing(listingId) {
@@ -244,43 +256,140 @@ class App extends React.Component {
 			popupListing: true
 		},() => {
 			this.filterListings();
-			console.log(this.state);
 		});
 	}
 
-	closeListing() {
+	openPopup(type) {
+		const key = `popup${type}`;
 		this.setState({
-			popupListing: false
+			[key]: true
 		});
 	}
 
-	openEditForm() {
+	closePopup(type) {
+		const key = `popup${type}`;
 		this.setState({
-			popupEditForm: true
+			[key]: false
 		});
 	}
 
-	closeEditForm() {
+	loadSampleListings() {		
 		this.setState({
-			popupEditForm: false
+			listingsData
+		});
+		this.fetchAndUpdate();
+	}
+
+	resetFilter() {
+		this.setState({
+			city: 'All',
+			homeType: 'All',
+			bedrooms: 1,
+			min_price: 0,
+			max_price: 100000,
+			min_space: 0,
+			max_space: 100000,
+			elevator: false,
+			pool: false,
+			jacuzzi: false,
+			gym: false
+		}, () => {
+			this.filterListings();
+		});
+	}
+
+	handleRegistration(username, password) {
+		firebase.auth().createUserWithEmailAndPassword(username, password).catch(error => {
+			if (error.code === 'auth/weak-password') {
+				alert('The password is too weak');
+			} else {
+				alert(error.message);
+			}
+		});
+
+		this.handleAuth();
+	}
+
+	handleAuth() {
+		firebase.auth().onAuthStateChanged((user) => {
+			if (user) {
+				this.setState({ uid: user.email }, () => {
+					this.closePopup('SignInForm');
+					this.closePopup('RegisterForm');
+				});
+			} else {
+				console.log('No user');
+			}
+		});	
+	}
+
+	handleSignIn(username, password) {
+		firebase.auth().signInWithEmailAndPassword(username, password).catch(error => {
+			if (error.code === 'auth/wrong-password') {
+				alert('Wrong password');
+			} else {
+				alert(error.message);
+			}
+		});
+		console.log('signed in');
+
+
+		this.handleAuth();
+	}
+
+	handleSignOut() {
+		firebase.auth().signOut().then(() => {
+			console.log('Signin out');
+			this.setState({ uid: null });
+		}).catch((error) => {
+			alert(error);
 		});
 	}
 
 	render() {
+		const { popupListing, popupAddForm, popupRegisterForm, popupSignInForm } = this.state;
+
+		if (popupListing || popupAddForm || popupRegisterForm || popupSignInForm) {
+			document.querySelector('body').style.overflow = 'hidden';
+		} else {
+			document.querySelector('body').style.overflow = '';
+		}
+
 		return (
 			<div>
-				<Header openAddForm={this.openAddForm} />
+				<Header
+					openPopup={this.openPopup} 
+					loadSampleListings={this.loadSampleListings} 
+					globalState={this.state}
+					handleSignOut={this.handleSignOut}
+				/>
 				<section id="content-area">
-					<Filter globalState={this.state} changeState={this.changeState} />
-					<Listings viewListing={this.viewListing} globalState={this.state} filteredListings={this.state.filteredListings} changeView={this.changeView} changeState={this.changeState} />
+					<Filter 
+						globalState={this.state} 
+						changeState={this.changeState} 
+						resetFilter={this.resetFilter} 
+					/>
+					<Listings 
+						globalState={this.state} 
+						filteredListings={this.state.filteredListings}
+						viewListing={this.viewListing} 
+						changeView={this.changeView} 
+						changeState={this.changeState} 
+					/>
 					{this.state.popupAddForm ? 
-						<AddListingForm closeAddForm={this.closeAddForm} addListing={this.addListing} /> : null
+						<AddListingForm globalState={this.state} closePopup={this.closePopup} addListing={this.addListing} /> : null
 					}
 					{this.state.popupListing ? 
-						<ViewListing globalState={this.state} closeListing={this.closeListing} deleteListing={this.deleteListing} openEditForm={this.openEditForm} /> : null
+						<ViewListing globalState={this.state} closePopup={this.closePopup} deleteListing={this.deleteListing} openPopup={this.openPopup} /> : null
 					}
 					{this.state.popupEditForm ? 
-						<EditListingForm closeEditForm={this.closeEditForm} globalState={this.state} editListing={this.editListing} /> : null
+						<EditListingForm closePopup={this.closePopup} globalState={this.state} editListing={this.editListing} /> : null
+					}
+					{this.state.popupSignInForm ? 
+						<SignInForm closePopup={this.closePopup}  handleSignIn={this.handleSignIn} /> : null
+					}
+					{this.state.popupRegisterForm ? 
+						<RegisterForm closePopup={this.closePopup} handleRegistration={this.handleRegistration} /> : null
 					}
 				</section>
 			</div>

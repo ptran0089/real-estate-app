@@ -13,16 +13,17 @@ class EditListingForm extends React.Component {
 			homeType: this.homeType.value,
 			image: this.image.value,
 			amenities: [],
-			id: this.props.globalState.listingId
+			id: this.props.globalState.listingId,
+			owner: this.props.globalState.uid
 		}
 
 		if (this.elevator.checked) listing.amenities.push('elevator');
 		if (this.gym.checked) listing.amenities.push('gym');
-		if (this.basement.checked) listing.amenities.push('basement');
+		if (this.jacuzzi.checked) listing.amenities.push('jacuzzi');
 		if (this.pool.checked) listing.amenities.push('pool');
 
 		this.props.editListing(listing);
-		this.closeAddForm();
+		this.props.closeEditForm();
 	}
 
 	render() {
@@ -30,7 +31,21 @@ class EditListingForm extends React.Component {
 		const listing = this.props.globalState.listingsData.find(listing => {
 			return listing.id === listingId;
 		});
-		const { amenities } = listing.amenities;
+
+		var elevator, gym, pool, jacuzzi;
+		if (listing.amenities) {
+			const { amenities } = listing;
+			elevator = amenities.includes('elevator');
+			gym = amenities.includes('gym');
+			pool = amenities.includes('pool');
+			jacuzzi = amenities.includes('jacuzzi');
+		} else {
+			elevator = false;
+			jacuzzi = false;
+			gym = false;
+			pool = false;
+		}
+		
 		return (
 			<div className="popup">
 				<div className="form-container">
@@ -48,7 +63,7 @@ class EditListingForm extends React.Component {
 						<input ref={(input) => this.space = input} type="number" name="space" defaultValue={listing.space} required />
 						<label>
 							Type
-							<select ref={(input) => this.homeType = input} name="homeType">
+							<select ref={(input) => this.homeType = input} name="homeType" defaultValue={listing.homeType}>
 								<option value="Apartment">Apartment</option>
 								<option value="Condo">Condo</option>
 								<option value="House">House</option>
@@ -58,22 +73,22 @@ class EditListingForm extends React.Component {
 						<h2>Amenities</h2>
 						<label>
 							Elevator
-							<input ref={(input) => this.elevator = input} type="checkbox" name="elevator" value="elevator" />
+							<input ref={(input) => this.elevator = input} type="checkbox" name="elevator" value="elevator" defaultChecked={elevator ? 'checked' : ''} />
 						</label>
 						<label>
 							Gym
-							<input ref={(input) => this.gym = input} type="checkbox" name="gym" value="gym" />
+							<input ref={(input) => this.gym = input} type="checkbox" name="gym" value="gym" defaultChecked={gym ? 'checked' : ''} />
 						</label>
 						<label>
 							Pool
-							<input ref={(input) => this.pool = input} type="checkbox" name="pool" value="pool" />
+							<input ref={(input) => this.pool = input} type="checkbox" name="pool" value="pool" defaultChecked={pool ? 'checked' : ''} />
 						</label>
 						<label>
-							Basement
-							<input ref={(input) => this.basement = input} type="checkbox" name="basement" value="basement" />
+							Jacuzzi
+							<input ref={(input) => this.jacuzzi = input} type="checkbox" name="jacuzzi" value="jacuzzi" defaultChecked={jacuzzi ? 'checked' : ''} />
 						</label>
 						<button type="submit">Submit</button>
-						<button className="closePopup" onClick={this.props.closeEditForm}>Close</button>
+						<button className="closePopup" onClick={() => this.props.closePopup('EditForm')}>Close</button>
 					</form>
 				</div>
 			</div>

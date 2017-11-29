@@ -29,7 +29,7 @@ class Listings extends React.Component {
 	render() {
 		return (
 			<div id="listings">
-				<input type="text" id="search" name="search" onChange={this.props.changeState}/>
+				<input type="text" id="search" name="search" onChange={this.props.changeState} placeholder="Search city"/>
 				<div className="listings-header">
 					<p className="results">{this.props.filteredListings.length} results found</p>
 					<div className="sort-view">
@@ -59,7 +59,6 @@ class Listings extends React.Component {
 						<li>Next</li>				
 					</ul>
 				</div>
-
 			</div>
 		)
 	}
