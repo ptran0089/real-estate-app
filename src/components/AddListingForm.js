@@ -15,7 +15,7 @@ class AddListingForm extends React.Component {
 			image: this.image.value,
 			amenities: [],
 			id,
-			owner: this.props.globalState.uid
+			owner: this.props.globalState.userEmail
 		};
 
 		if (this.elevator.checked) listing.amenities.push('elevator');
@@ -82,8 +82,6 @@ class AddListingForm extends React.Component {
 	}
 
 	render() {
-		
-
 		return (
 			<div className="popup">
 				<div className="form-container">

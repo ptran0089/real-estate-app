@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 class EditListingForm extends React.Component {
 	editListing(event) {
@@ -23,18 +24,18 @@ class EditListingForm extends React.Component {
 		if (this.pool.checked) listing.amenities.push('pool');
 
 		this.props.editListing(listing);
-		this.props.closeEditForm();
+		this.props.closePopup('EditForm');
 	}
 
 	render() {
 		const listingId = this.props.globalState.listingId;
-		const listing = this.props.globalState.listingsData.find(listing => {
-			return listing.id === listingId;
+		const listing = _.find(this.props.globalState.listingsData, listing => {
+			return listing.listingInfo.id === listingId;
 		});
 
 		var elevator, gym, pool, jacuzzi;
-		if (listing.amenities) {
-			const { amenities } = listing;
+		if (listing.listingInfo.amenities) {
+			const { amenities } = listing.listingInfo;
 			elevator = amenities.includes('elevator');
 			gym = amenities.includes('gym');
 			pool = amenities.includes('pool');
@@ -51,19 +52,19 @@ class EditListingForm extends React.Component {
 				<div className="form-container">
 					<form className="listing-form" onSubmit={(e) => this.editListing(e)}>
 						<h1>Edit Listing</h1>
-						<input ref={(input) => this.address = input} type="text" name="address" defaultValue={listing.address} required />
-						<input ref={(input) => this.city = input} type="text" name="city" defaultValue={listing.city} required />
-						<input ref={(input) => this.state = input} type="text" name="state" defaultValue={listing.state} required />
-						<input ref={(input) => this.image = input} type="text" name="image" defaultValue={listing.image} required />
+						<input ref={(input) => this.address = input} type="text" name="address" defaultValue={listing.listingInfo.address} required />
+						<input ref={(input) => this.city = input} type="text" name="city" defaultValue={listing.listingInfo.city} required />
+						<input ref={(input) => this.state = input} type="text" name="state" defaultValue={listing.listingInfo.state} required />
+						<input ref={(input) => this.image = input} type="text" name="image" defaultValue={listing.listingInfo.image} required />
 						<label htmlFor="bedrooms">Bedrooms</label>
-						<input ref={(input) => this.bedrooms = input} type="number" name="bedrooms" defaultValue={listing.bedrooms} required />
+						<input ref={(input) => this.bedrooms = input} type="number" name="bedrooms" defaultValue={listing.listingInfo.bedrooms} required />
 						<label htmlFor="price">Price</label>
-						<input ref={(input) => this.price = input} type="number" name="price" step="100" defaultValue={listing.price} required />
+						<input ref={(input) => this.price = input} type="number" name="price" step="100" defaultValue={listing.listingInfo.price} required />
 						<label htmlFor="space">Space</label>	
-						<input ref={(input) => this.space = input} type="number" name="space" defaultValue={listing.space} required />
+						<input ref={(input) => this.space = input} type="number" name="space" defaultValue={listing.listingInfo.space} required />
 						<label>
 							Type
-							<select ref={(input) => this.homeType = input} name="homeType" defaultValue={listing.homeType}>
+							<select ref={(input) => this.homeType = input} name="homeType" defaultValue={listing.listingInfo.homeType}>
 								<option value="Apartment">Apartment</option>
 								<option value="Condo">Condo</option>
 								<option value="House">House</option>

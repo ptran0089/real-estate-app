@@ -6,17 +6,17 @@ class Listings extends React.Component {
 			return this.props.filteredListings.map((listing, index) => {
 				return (
 					<div key={index} className="listing">
-						<div className="image" style={{background: `url(${listing.image}) center center no-repeat`}}>
-							<div className="address">{listing.address}</div>
+						<div className="image" style={{background: `url(${listing.listingInfo.image}) center center no-repeat`}}>
+							<div className="address">{listing.listingInfo.address}</div>
 							<div className="details">
-								<div className="space-details"><i className="fa fa-square-o" aria-hidden="true"></i> {listing.space}ft&sup2;</div>
-								<div className="bedroom-details"><i className="fa fa-bed" aria-hidden="true"></i> {listing.bedrooms} bedrooms</div>
-								<div className="view-listings" onClick={() => this.props.viewListing(listing.id)}>View Listings</div>
+								<div className="space-details"><i className="fa fa-square-o" aria-hidden="true"></i> {listing.listingInfo.space}ft&sup2;</div>
+								<div className="bedroom-details"><i className="fa fa-bed" aria-hidden="true"></i> {listing.listingInfo.bedrooms} bedrooms</div>
+								<div className="view-listings" onClick={() => this.props.viewListing(listing.listingInfo.id)}>View Listings</div>
 							</div>
 						</div>
 						<div className="info">
-							<div className="price">{listing.price} / month</div>
-							<div className="location"><i className="fa fa-map-marker" aria-hidden="true"></i>{listing.city}, {listing.state}</div>
+							<div className="price">{listing.listingInfo.price} / month</div>
+							<div className="location"><i className="fa fa-map-marker" aria-hidden="true"></i>{listing.listingInfo.city}, {listing.listingInfo.state}</div>
 						</div>
 					</div>
 				)

@@ -2,14 +2,15 @@ import React from 'react';
 
 class Header extends React.Component {
 	renderNavBar() {
-		if (this.props.globalState.uid) {
+		const{ globalState } = this.props;
+		if (globalState.uid) {
 			return (
 				<nav>
 					<a href="#" onClick={() => this.props.openPopup('AddForm')}>CREATE LISTING</a>
-					{this.props.globalState.uid === 'ptran0089@gmail.com' ? 
+					{globalState.userEmail === 'ptran0089@gmail.com' ? 
 						<a href="#" onClick={this.props.loadSampleListings}>LOAD SAMPLE LISTINGS</a> : null
 					}
-					<a>{this.props.globalState.uid.toUpperCase()}</a>
+					<a>SIGNED IN AS {globalState.username || globalState.userEmail.toUpperCase()}</a>
 					<a href="#" onClick={this.props.handleSignOut}>SIGN OUT</a>
 				</nav>
 			);

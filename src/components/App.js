@@ -8,8 +8,8 @@ import ViewListing from './ViewListing';
 import EditListingForm from './EditListingForm';
 import SignInForm from './SignInForm';
 import RegisterForm from './RegisterForm';
-import base from '../base';
 import firebase from '../firebase';
+import _ from 'lodash';
 
 class App extends React.Component {
 	constructor() {
@@ -42,7 +42,9 @@ class App extends React.Component {
 			popupRegisterForm: false,
 			popupSignInForm: false,
 			listingId: null,
-			uid: null
+			uid: null,
+			userEmail: null,
+			username: null
 		}
 
 		this.changeState = this.changeState.bind(this);
@@ -61,46 +63,30 @@ class App extends React.Component {
 	};
 
 	componentWillMount() {
-		this.ref = base.syncState(`/`, {
-			context: this,
-			state: 'listingsData',
-			asArray: true,
-			then(data){
-				this.filterListings();
-				this.populateForms();
-				this.state.listingsData.sort((a, b) => {
-					return a.price - b.price;
-				});
-			}
-		});
-	}
+		const databaseRef = firebase.database().ref('/listings');
 
-	fetchAndUpdate() {
-		base.fetch('/', {
-			context: this,
-			asArray: true,
-			then(data){
+		databaseRef.on('value', snapshot => {
+			this.setState({
+				listingsData: snapshot.val()
+			}, () => {
 				this.filterListings();
 				this.populateForms();
-				this.state.listingsData.sort((a, b) => {
-					return a.price - b.price;
-				});
-			}
+			});
 		});
 	}
 
 	populateForms() {
-		let cities = this.state.listingsData.map(listing => listing.city);
+		let cities = _.map(this.state.listingsData, listing => listing.listingInfo.city);
 		cities = new Set(cities);
 		cities = [...cities];
 		cities.sort();
 
-		let homeTypes = this.state.listingsData.map(listing => listing.homeType);
+		let homeTypes = _.map(this.state.listingsData, listing => listing.listingInfo.homeType);
 		homeTypes = new Set(homeTypes);
 		homeTypes = [...homeTypes];
 		homeTypes.sort(); 
 
-		let bedrooms = this.state.listingsData.map(listing => listing.bedrooms);
+		let bedrooms = _.map(this.state.listingsData, listing => listing.listingInfo.bedrooms);
 		bedrooms = new Set(bedrooms);
 		bedrooms = [...bedrooms];
 		bedrooms.sort((a, b) => {
@@ -117,29 +103,29 @@ class App extends React.Component {
 	}
 
 	filterListings() {
-		let filteredListings = this.state.listingsData.filter(listing => {
-			return listing.price >= this.state.min_price
-				&& listing.price <= this.state.max_price
-				&& listing.space >= this.state.min_space
-				&& listing.space <= this.state.max_space
-				&& listing.bedrooms >= this.state.bedrooms;
+		let filteredListings = _.filter(this.state.listingsData, listing => {
+			return listing.listingInfo.price >= this.state.min_price
+				&& listing.listingInfo.price <= this.state.max_price
+				&& listing.listingInfo.space >= this.state.min_space
+				&& listing.listingInfo.space <= this.state.max_space
+				&& listing.listingInfo.bedrooms >= this.state.bedrooms;
 		});
 
 		if (this.state.city !== 'All') {
 			filteredListings = filteredListings.filter(listing => {
-				return listing.city === this.state.city;
+				return listing.listingInfo.city === this.state.city;
 			});
 		}
 
 		if (this.state.homeType !== 'All') {
 			filteredListings = filteredListings.filter(listing => {
-				return listing.homeType === this.state.homeType;
+				return listing.listingInfo.homeType === this.state.homeType;
 			});
 		}
 
 		if (this.state.jacuzzi) {
 			filteredListings = filteredListings.filter(listing => {
-				return listing.amenities.find(amenity => {
+				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'jacuzzi';
 				});
 			});
@@ -147,7 +133,7 @@ class App extends React.Component {
 		
 		if (this.state.pool) {
 			filteredListings = filteredListings.filter(listing => {
-				return listing.amenities.find(amenity => {
+				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'pool';
 				});
 			});
@@ -155,7 +141,7 @@ class App extends React.Component {
 		
 		if (this.state.elevator) {
 			filteredListings = filteredListings.filter(listing => {
-				return listing.amenities.find(amenity => {
+				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'elevator';
 				});
 			});
@@ -163,7 +149,7 @@ class App extends React.Component {
 		
 		if (this.state.gym) {
 			filteredListings = filteredListings.filter(listing => {
-				return listing.amenities.find(amenity => {
+				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'gym';
 				});
 			});
@@ -171,19 +157,19 @@ class App extends React.Component {
 
 		if (this.state.sortby === 'Highest Price') {
 			filteredListings = filteredListings.sort((a, b) => {
-				return b.price - a.price;
+				return b.listingInfo.price - a.listingInfo.price;
 			});
 		}
 
 		if (this.state.sortby === 'Lowest Price') {
 			filteredListings = filteredListings.sort((a, b) => {
-				return a.price - b.price;
+				return a.listingInfo.price - b.listingInfo.price;
 			});
 		}
 
 		if (this.state.search) {
 			filteredListings = filteredListings.filter(listing => {
-				const city = listing.city.toLowerCase();
+				const city = listing.listingInfo.city.toLowerCase();
 				const search = this.state.search.toLowerCase();
 
 				return city.match(search);
@@ -213,41 +199,27 @@ class App extends React.Component {
 	}
 
 	addListing(listing) {
-		const listingsData = [...this.state.listingsData];
-
 		this.closePopup('AddForm');
-		listingsData.push(listing);
-		this.setState({
-			listingsData
-		});
-		this.fetchAndUpdate();
+		const updates = {};
+		updates[`/listings/${listing.id}`] = {
+			owner: this.state.uid,
+			listingInfo: listing
+		};
+
+		firebase.database().ref().update(updates);
 	}
 
 	editListing(newListing) {
-		const listingsData = [...this.state.listingsData];
-		const index = listingsData.findIndex(listing => {
-			return listing.id === this.state.listingId;
-		});
+		this.closePopup('EditForm');
+		const updates = {};
+		updates[`/listings/${newListing.id}/listingInfo`] = newListing;
 
-		listingsData[index] = newListing;
-		this.closePopup('EditForm'); 
-		this.setState({
-			listingsData
-		});
-		this.fetchAndUpdate();
+		return firebase.database().ref().update(updates);
 	}
 
 	deleteListing(listingId) {
-		let listingsData = [...this.state.listingsData];
-		listingsData = listingsData.filter(listing => {
-			return listing.id !== listingId;
-		});
-
 		this.closePopup('Listing');
-		this.setState({
-			listingsData
-		});
-		this.fetchAndUpdate();
+		firebase.database().ref(`/listings/${listingId}`).remove();
 	}
 
 	viewListing(listingId) {
@@ -273,11 +245,17 @@ class App extends React.Component {
 		});
 	}
 
-	loadSampleListings() {		
-		this.setState({
-			listingsData
+	loadSampleListings() {
+		let listings = _.forEach(listingsData, listing => {
+			listing.owner = this.state.uid
 		});
-		this.fetchAndUpdate();
+		this.setState({
+			listingsData: listings
+		}, () => {
+			firebase.database().ref('/').set({
+				listings: this.state.listingsData
+			});
+		});
 	}
 
 	resetFilter() {
@@ -298,22 +276,26 @@ class App extends React.Component {
 		});
 	}
 
-	handleRegistration(username, password) {
-		firebase.auth().createUserWithEmailAndPassword(username, password).catch(error => {
+	handleRegistration(username, email, password) {
+		firebase.auth().createUserWithEmailAndPassword(email, password).catch(error => {
 			if (error.code === 'auth/weak-password') {
 				alert('The password is too weak');
 			} else {
 				alert(error.message);
 			}
 		});
-
-		this.handleAuth();
+		
+		this.handleAuth(username);
 	}
 
-	handleAuth() {
+	handleAuth(username) {
 		firebase.auth().onAuthStateChanged((user) => {
 			if (user) {
-				this.setState({ uid: user.email }, () => {
+				this.setState({ 
+					uid: user.uid,
+					userEmail: user.email,
+					username: user.displayName 
+				}, () => {
 					this.closePopup('SignInForm');
 					this.closePopup('RegisterForm');
 				});
@@ -323,8 +305,8 @@ class App extends React.Component {
 		});	
 	}
 
-	handleSignIn(username, password) {
-		firebase.auth().signInWithEmailAndPassword(username, password).catch(error => {
+	handleSignIn(email, password) {
+		firebase.auth().signInWithEmailAndPassword(email, password).catch(error => {
 			if (error.code === 'auth/wrong-password') {
 				alert('Wrong password');
 			} else {
@@ -340,7 +322,10 @@ class App extends React.Component {
 	handleSignOut() {
 		firebase.auth().signOut().then(() => {
 			console.log('Signin out');
-			this.setState({ uid: null });
+			this.setState({ 
+				uid: null,
+				userEmail: null
+			 });
 		}).catch((error) => {
 			alert(error);
 		});

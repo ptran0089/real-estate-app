@@ -3,9 +3,9 @@ import React from 'react';
 class SignInForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
-		const username = this.username.value;
+		const email = this.email.value;
 		const password = this.password.value;
-		this.props.handleSignIn(username, password);
+		this.props.handleSignIn(email, password);
 	}
 
 	render() {
@@ -14,8 +14,8 @@ class SignInForm extends React.Component {
 				<div className="form-container">
 					<form className="listing-form" onSubmit={(e) => this.handleSubmit(e)}>
 						<h1>Sign In</h1>
-						<label htmlFor="username">Username</label>
-						<input ref={(input) => this.username = input} type="text" name="username" required />
+						<label htmlFor="email">Email</label>
+						<input ref={(input) => this.email = input} type="text" name="email" required />
 						<label htmlFor="password">Password</label>
 						<input ref={(input) => this.password = input} type="text" name="password" required />
 						<button type="submit">Sign In</button>

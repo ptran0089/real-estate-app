@@ -1,14 +1,15 @@
 import React from 'react';
+import _ from 'lodash';
 
 class ViewListing extends React.Component {
 	displayAmenities() {
 		const listingId = this.props.globalState.listingId;
-		const listing = this.props.globalState.listingsData.find(listing => {
-			return listing.id === listingId;
+		const listing = _.find(this.props.globalState.listingsData, listing => {
+			return listing.listingInfo.id === listingId;
 		});
 
-		if (listing.amenities && listing.amenities.length > 0) {
-			return listing.amenities.map((amenity, index) => {
+		if (listing.listingInfo.amenities && listing.listingInfo.amenities.length > 0) {
+			return listing.listingInfo.amenities.map((amenity, index) => {
 				if(amenity === 'elevator') {
 					return <div key={listingId + index}>🔼 Elevator</div>
 				}
@@ -29,33 +30,35 @@ class ViewListing extends React.Component {
 
 	render() {
 		const listingId = this.props.globalState.listingId;
-		const listing = this.props.globalState.listingsData.find(listing => {
-			return listing.id === listingId;
+		const listing = _.find(this.props.globalState.listingsData, listing => {
+			return listing.listingInfo.id === listingId;
 		});
 		return (
 			<div className="popup">
 				<div className="listing-container">
 					<div className="listing">
-						<div className="image" style={{background: `url(${listing.image}) center center/cover no-repeat`}}></div>
+						<div className="image" style={{background: `url(${listing.listingInfo.image}) center center/cover no-repeat`}}></div>
 						<div className="address">
-							<div><i className="fa fa-map-marker" aria-hidden="true"></i> {listing.address}</div>
-							<div className="city">{listing.city}, {listing.state}</div>
+							<div><i className="fa fa-map-marker" aria-hidden="true"></i> {listing.listingInfo.address}</div>
+							<div className="city">{listing.listingInfo.city}, {listing.listingInfo.state}</div>
 						</div>
-						<div className="price">${listing.price} / month</div>
+						<div className="price">${listing.listingInfo.price} / month</div>
 						<div className="buttons">
-						{this.props.globalState.uid === listing.owner ? 
+						{
+							listing.listingInfo.owner === this.props.globalState.userEmail ? 
 							<button className="edit" onClick={() => this.props.openPopup('EditForm')}>Edit</button> : null
 						}
-						{this.props.globalState.uid === listing.owner ? 
+						{
+							listing.listingInfo.owner === this.props.globalState.userEmail ? 
 							<button className="delete" onClick={() => this.props.deleteListing(listingId)}>Delete</button> : null
 						}
 							<button className="close" onClick={() => this.props.closePopup('Listing')}>Close</button>
 						</div>
 					</div>
 					<div className="details">
-						<div className="space"><i className="fa fa-square-o" aria-hidden="true"></i> {listing.space}ft&sup2;</div>
-						<div className="bedrooms"><i className="fa fa-bed" aria-hidden="true"></i> {listing.bedrooms} Bedrooms</div>
-						<div>Type: {listing.homeType}</div>
+						<div className="space"><i className="fa fa-square-o" aria-hidden="true"></i> {listing.listingInfo.space}ft&sup2;</div>
+						<div className="bedrooms"><i className="fa fa-bed" aria-hidden="true"></i> {listing.listingInfo.bedrooms} Bedrooms</div>
+						<div>Type: {listing.listingInfo.homeType}</div>
 					</div>
 						<h1>Amenities</h1>
 						<div className="amenities">
