@@ -5,7 +5,7 @@ class Listings extends React.Component {
 		if (this.props.filteredListings.length > 0) {
 			return this.props.filteredListings.map((listing, index) => {
 				return (
-					<div key={index} className="listing">
+					<div key={index} className="listing-thumbnail">
 						<div className="image" style={{background: `url(${listing.listingInfo.image}) center center no-repeat`}}>
 							<div className="address">{listing.listingInfo.address}</div>
 							<div className="details">

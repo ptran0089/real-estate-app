@@ -1,0 +1,153 @@
+@media screen and (max-width: 600px) {
+	#header {
+		z-index: 1;
+		width: 185px;
+		height: auto;
+		padding-left: 150px;
+		position: absolute;
+		transform: translate(-9999px, 0);
+		transition: transform 1s ease;
+		background: $darkpurple;
+
+		&.open {
+			transform: translate(0, 0);
+			transition: transform 0.3s ease;
+		}
+
+		#logo {
+			display: none;
+		}
+
+		nav {
+			a {
+				display: list-item;
+		    width: 100%;
+				padding: 20px 25px;
+				margin-right: 30px;
+				background: $pink;
+				border-radius: 5px;
+		    font-weight: 700;
+		    text-align: left;
+		    list-style: none;
+
+		    &:nth-last-child(1) {
+					padding: 20px 25px;
+				}
+			}
+		}
+	}
+
+	#content-area {
+		width: 100%;
+		display: grid;
+		grid-template-columns: 100%;
+
+		#filter {
+			height: 900px;
+			.container {
+				label {
+					display: block;
+					margin-top: 20px;
+					font-size: 18px;
+				}
+
+				select {
+					width: 100%;
+					background: transparent;
+					padding: 10px;
+					font-size: 18px;
+					font-weight: 300;
+
+				}
+
+				input[type="text"],
+				input[type="number"] {
+					width: 115px;
+					margin-right: 15px;
+					margin-top: 15px;
+					padding: 5px;
+					border-radius: 5px;
+					outline: none;
+					font-size: 18px;
+				}
+
+				input[type="checkbox"] {
+					float: right;
+					vertical-align: top;
+					width: 25px;
+					height: 25px;
+				}
+
+				.reset {
+					width: 120px;
+					height: 35px;
+					display: inline-block;
+					margin: 20px 0 0 60px;
+					border-radius: 5px;
+					border: none;
+					outline: none;
+					background: $darkpurple;
+					color: white;
+					font-size: 18px;
+
+					&:hover {
+						background: $pink;
+						font-weight: 700;
+						cursor: pointer;
+					}
+				}
+			}
+			.menu {
+				float: right;
+				padding: 1.2em;
+				font-size: 24px;
+				display: inline-block;
+			}
+		}
+
+		#listings {
+			#search {
+				display: none;
+			}
+			.listings-header {
+				display: none;
+			}
+			#listings-area {
+				display: grid;
+				grid-template-columns: 100%;
+
+				&.large-view {
+					grid-template-columns: 100%;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 601px) and (max-width: 1100px) {
+	#content-area {
+		display: grid;
+		grid-template-columns: 30% 70%;
+
+		#listings {
+			#listings-area {
+				display: grid;
+				grid-gap: 15px 15px;
+				grid-template-columns: 45% 45%;
+
+				&.large-view {
+					display: grid;
+					grid-gap: 15px 15px;
+					grid-template-columns: 45% 45%;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	
+}
+
+
+

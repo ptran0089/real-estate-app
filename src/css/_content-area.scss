@@ -1,0 +1,281 @@
+#content-area {
+	display: grid;
+	grid-template-columns: 20% 80%;
+
+	#filter {
+		background: $lightgrey;
+		height: 800px;
+
+		.menu {
+			display: none;
+		}
+
+		.container {
+			width: 100%;
+			padding: 20px;
+
+			h5 {
+				margin-top: 25px;
+				font-size: 0.9rem;
+				color: $darkgrey;
+			}
+
+			label {
+				display: block;
+				margin-top: 20px;
+				font-size: 1rem;
+			}
+
+			select {
+				width: 100%;
+				background: transparent;
+				padding: 10px;
+				font-size: 0.9rem;
+				font-weight: 300;
+
+			}
+
+			input[type="text"],
+			input[type="number"] {
+				width: 115px;
+				margin-right: 15px;
+				margin-top: 15px;
+				padding: 5px;
+				border-radius: 5px;
+				outline: none;
+				font-size: 1rem;
+			}
+
+			input[type="checkbox"] {
+				float: right;
+				vertical-align: top;
+			}
+
+			.reset {
+				width: 120px;
+				height: 35px;
+				display: inline-block;
+				margin: 20px 0 0 60px;
+				border-radius: 5px;
+				border: none;
+				outline: none;
+				background: $darkpurple;
+				color: white;
+				font-size: 1rem;
+
+				&:hover {
+					background: $pink;
+					font-weight: 700;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+
+	#listings {
+		background: $offwhite;
+		width: 100%;
+
+		#search {
+			width: 70%;
+			margin: 15px;
+			padding: 0 5px 5px 0;
+			border: none;
+			border-bottom: 1px solid $grey;
+			outline: none;
+			background: transparent;
+			font-size: 2rem;
+			line-height: 2rem;
+			font-weight: 100;
+			color: $darkgrey;
+		}
+
+		.listings-header {
+			width: 100%;
+			margin: 5px 0 0 0;
+			display: grid;
+			grid-template-columns: 20% 80%;
+
+			.results {
+				margin: 5px 0 0 15px;
+				font-size: 0.8rem;
+				color: $darkgrey;
+			}
+
+			.sort-view {
+				justify-self: end;
+
+				.sort {
+					margin-right: 20px;
+					vertical-align: top;
+					font-weight: 300;
+					font-size: 0.9rem
+				}
+
+				.view {
+					display: inline-block;
+					margin-right: 20px;
+					font-size: 1.5rem;
+
+					i {
+						margin-right: 15px;
+
+						 &:hover {
+						 	cursor: pointer;
+						 }
+					}
+				}
+			}
+		}
+
+		#listings-area {
+			margin-top: 50px;
+			margin-bottom: 50px;
+			display: grid;
+			grid-template-columns: 20% 20% 20% 20%;
+			justify-content: space-evenly;
+			grid-row-gap: 5rem;
+
+			&.large-view {
+				margin-top: 50px;
+				margin-bottom: 50px;
+				display: grid;
+				grid-template-columns: 45% 45%;
+				justify-content: center;
+				grid-row-gap: 5rem;
+				grid-column-gap: 2rem;
+			}
+
+			.listing-thumbnail {
+				background: #fff;
+				border-radius: 10px;
+				-webkit-box-shadow: 0px 10px 55px -5px rgba(224,224,224,0.8);
+				-moz-box-shadow: 0px 10px 55px -5px rgba(224,224,224,0.8);
+				box-shadow: 0px 10px 55px -5px rgba(224,224,224,1);
+
+				.image {
+					position: relative;
+					border-top-left-radius: 10px;
+					border-top-right-radius: 10px;	
+					color: white;
+					height: 200px;
+					padding: 15px;
+					-webkit-background-size: cover;
+				  	-moz-background-size: cover;
+				  	-o-background-size: cover;
+				  	background-size: cover;
+
+				  	&:hover {
+
+				  		.address {
+				  			opacity: 0;
+				  		}
+
+				  		.details {
+				  			opacity: .9;
+				  		}
+				  	}
+
+				  	.address {
+				  		opacity: 1;
+				  		position: absolute;
+				  		bottom: 20px;
+				  		font-size: 1.2rem;
+				  	}
+
+				  	.details {
+				  		display: grid;
+				  		align-content: end;
+				  		justify-content: center;
+				  		opacity: 0;
+				  		position: absolute;
+				  		width: 100%;
+				  		height: 100%;
+				  		top: 0;
+				  		left: 0;
+				  		border-top-left-radius: 10px;
+				  		border-top-right-radius: 10px;
+				  		background: $pink;
+				  		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#5c27c6+0,cc81ea+100 */
+						background: #5c27c6; /* Old browsers */
+						background: -moz-linear-gradient(left,  #5c27c6 0%, #cc81ea 100%); /* FF3.6-15 */
+						background: -webkit-linear-gradient(left,  #5c27c6 0%,#cc81ea 100%); /* Chrome10-25,Safari5.1-6 */
+						background: linear-gradient(to right,  #5c27c6 0%,#cc81ea 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+						filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5c27c6', endColorstr='#cc81ea',GradientType=1 ); /* IE6-9 */
+			  		transition: all 0.2s;
+
+				  		.space-details,
+				  		.bedroom-details {
+				  			margin-bottom: 15px;
+				  		}
+
+						.view-listings {
+							width: 120px;
+							height: 30px;
+							margin-bottom: 20px;
+							padding-top: 6px;
+							border-radius: 5px;
+							background: $darkpurple;
+							text-align: center;
+							transition: all .2s;
+
+							&:hover {
+								background: $pink;
+								cursor: pointer;
+							}
+						}
+				  	}
+				}
+
+				.info {
+					height: 100px;
+
+					.price {
+						margin: 10px;
+						color: $darkgrey;
+					}
+
+					.location {
+						margin-left: 10px;
+						color: $grey;
+						font-size: 1.2rem;
+					}
+				}
+			}
+		}
+
+		#pagination {
+			text-align: center;
+			margin: 20px;
+
+			.pages {
+				-webkit-box-shadow: 0px 10px 55px -5px rgba(224,224,224,0.8);
+				-moz-box-shadow: 0px 10px 55px -5px rgba(224,224,224,0.8);
+				box-shadow: 0px 10px 55px -5px rgba(224,224,224,1);
+				display: inline-block;
+
+				li {
+					display: inline-block;
+					background: #fff;
+					padding: 20px 30px;
+
+					&.active,
+					&:hover {
+						background: $pink;
+						color: white;
+						font-weight: 700;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+	}
+}
+
+#content-area > div:nth-child(even) {
+		background: grey;
+	}
+
+
+
+

@@ -3,11 +3,12 @@ import Header from './Header';
 import Filter from './Filter';
 import Listings from './Listings';
 import listingsData from './data/listingsData';
-import AddListingForm from './AddListingForm';
-import ViewListing from './ViewListing';
-import EditListingForm from './EditListingForm';
-import SignInForm from './SignInForm';
-import RegisterForm from './RegisterForm';
+import AddListingForm from './modals/AddListingForm';
+import ViewListing from './modals/ViewListing';
+import EditListingForm from './modals/EditListingForm';
+import SignInForm from './modals/SignInForm';
+import RegisterForm from './modals/RegisterForm';
+import About from './modals/About';
 import firebase from '../firebase';
 import _ from 'lodash';
 
@@ -41,10 +42,12 @@ class App extends React.Component {
 			popupEditForm: false,
 			popupRegisterForm: false,
 			popupSignInForm: false,
+			popupAbout: false,
 			listingId: null,
 			uid: null,
 			userEmail: null,
-			username: null
+			username: null,
+			menu: false
 		}
 
 		this.changeState = this.changeState.bind(this);
@@ -60,6 +63,7 @@ class App extends React.Component {
 		this.handleRegistration = this.handleRegistration.bind(this);
 		this.handleSignIn = this.handleSignIn.bind(this);
 		this.handleSignOut = this.handleSignOut.bind(this);
+		this.toggleMenu = this.toggleMenu.bind(this);
 	};
 
 	componentWillMount() {
@@ -245,6 +249,12 @@ class App extends React.Component {
 		});
 	}
 
+	toggleMenu() {
+		this.setState({
+			menu: !this.state.menu
+		});
+	}
+
 	loadSampleListings() {
 		let listings = _.forEach(listingsData, listing => {
 			listing.owner = this.state.uid
@@ -300,7 +310,7 @@ class App extends React.Component {
 					this.closePopup('RegisterForm');
 				});
 			} else {
-				console.log('No user');
+				alert('User not found');
 			}
 		});	
 	}
@@ -313,15 +323,12 @@ class App extends React.Component {
 				alert(error.message);
 			}
 		});
-		console.log('signed in');
-
 
 		this.handleAuth();
 	}
 
 	handleSignOut() {
 		firebase.auth().signOut().then(() => {
-			console.log('Signin out');
 			this.setState({ 
 				uid: null,
 				userEmail: null
@@ -332,9 +339,9 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { popupListing, popupAddForm, popupRegisterForm, popupSignInForm } = this.state;
+		const { popupListing, popupAddForm, popupRegisterForm, popupSignInForm, popupAbout } = this.state;
 
-		if (popupListing || popupAddForm || popupRegisterForm || popupSignInForm) {
+		if (popupListing || popupAddForm || popupRegisterForm || popupSignInForm || popupAbout) {
 			document.querySelector('body').style.overflow = 'hidden';
 		} else {
 			document.querySelector('body').style.overflow = '';
@@ -352,7 +359,8 @@ class App extends React.Component {
 					<Filter 
 						globalState={this.state} 
 						changeState={this.changeState} 
-						resetFilter={this.resetFilter} 
+						resetFilter={this.resetFilter}
+						toggleMenu={this.toggleMenu} 
 					/>
 					<Listings 
 						globalState={this.state} 
@@ -375,6 +383,9 @@ class App extends React.Component {
 					}
 					{this.state.popupRegisterForm ? 
 						<RegisterForm closePopup={this.closePopup} handleRegistration={this.handleRegistration} /> : null
+					}
+					{this.state.popupAbout ? 
+						<About closePopup={this.closePopup} /> : null
 					}
 				</section>
 			</div>
