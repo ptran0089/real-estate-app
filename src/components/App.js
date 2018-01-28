@@ -129,6 +129,7 @@ class App extends React.Component {
 
 		if (this.state.jacuzzi) {
 			filteredListings = filteredListings.filter(listing => {
+				if (!listing.listingInfo.amenities) return;
 				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'jacuzzi';
 				});
@@ -137,6 +138,7 @@ class App extends React.Component {
 		
 		if (this.state.pool) {
 			filteredListings = filteredListings.filter(listing => {
+				if (!listing.listingInfo.amenities) return;
 				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'pool';
 				});
@@ -145,6 +147,7 @@ class App extends React.Component {
 		
 		if (this.state.elevator) {
 			filteredListings = filteredListings.filter(listing => {
+				if (!listing.listingInfo.amenities) return;
 				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'elevator';
 				});
@@ -153,6 +156,7 @@ class App extends React.Component {
 		
 		if (this.state.gym) {
 			filteredListings = filteredListings.filter(listing => {
+				if (!listing.listingInfo.amenities) return;
 				return listing.listingInfo.amenities.find(amenity => {
 					return amenity === 'gym';
 				});
@@ -310,9 +314,8 @@ class App extends React.Component {
 					this.closePopup('RegisterForm');
 				});
 			} else {
-				alert('User not found');
 			}
-		});	
+		});
 	}
 
 	handleSignIn(email, password) {
@@ -354,6 +357,7 @@ class App extends React.Component {
 					loadSampleListings={this.loadSampleListings} 
 					globalState={this.state}
 					handleSignOut={this.handleSignOut}
+					toggleMenu={this.toggleMenu}
 				/>
 				<section id="content-area">
 					<Filter 

@@ -2,7 +2,7 @@ import React from 'react';
 
 class Header extends React.Component {
 	renderNavBar() {
-		const { globalState, loadSampleListings, handleSignOut, openPopup } = this.props;
+		const { globalState: { menu }, globalState, loadSampleListings, handleSignOut, openPopup, toggleMenu } = this.props;
 		if (globalState.uid) {
 			return (
 				<nav>
@@ -13,6 +13,7 @@ class Header extends React.Component {
 					}
 					<a>SIGNED IN AS {globalState.username || globalState.userEmail.toUpperCase()}</a>
 					<a href="#" onClick={handleSignOut}>SIGN OUT</a>
+					{menu ? <a href="#" onClick={toggleMenu}>CLOSE</a> : null}
 				</nav>
 			);
 		} else {
@@ -22,6 +23,7 @@ class Header extends React.Component {
 					<a href="#" onClick={() => openPopup('AddForm')}>CREATE LISTING</a>
 					<a href="#" onClick={() => openPopup('SignInForm')}>SIGN IN</a>
 					<a href="#" onClick={() => openPopup('RegisterForm')}>REGISTER</a>
+					{menu ? <a href="#" onClick={toggleMenu}>CLOSE</a> : null}
 				</nav>
 			);
 		}

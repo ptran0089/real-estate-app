@@ -1,9 +1,8 @@
 @media screen and (max-width: 600px) {
 	#header {
 		z-index: 1;
-		width: 185px;
+		width: 200px;
 		height: auto;
-		padding-left: 150px;
 		position: absolute;
 		transform: translate(-9999px, 0);
 		transition: transform 1s ease;
@@ -19,11 +18,11 @@
 		}
 
 		nav {
+			margin: 0 auto;
 			a {
 				display: list-item;
-		    width: 100%;
-				padding: 20px 25px;
-				margin-right: 30px;
+		    min-width: 170px;
+				padding: 20px 0 20px 20px;
 				background: $pink;
 				border-radius: 5px;
 		    font-weight: 700;
@@ -44,6 +43,7 @@
 
 		#filter {
 			height: 900px;
+
 			.container {
 				label {
 					display: block;
@@ -79,8 +79,8 @@
 				}
 
 				.reset {
-					width: 120px;
-					height: 35px;
+					width: 160px;
+					height: 45px;
 					display: inline-block;
 					margin: 20px 0 0 60px;
 					border-radius: 5px;
@@ -97,6 +97,7 @@
 					}
 				}
 			}
+
 			.menu {
 				float: right;
 				padding: 1.2em;
@@ -122,6 +123,24 @@
 			}
 		}
 	}
+
+	.popup {
+		width: 100%;
+		height: 100%;
+
+		.popup-container {
+			width: 100%;
+			height: 100%;
+			display: grid;
+			grid-template-columns: 100%;
+			background: $lightgrey;
+		}
+
+		.details,
+		.amenities {
+			margin: 15px 0 0 0;
+		}
+	}
 }
 
 @media screen and (min-width: 601px) and (max-width: 1100px) {
@@ -143,10 +162,88 @@
 			}
 		}
 	}
+
+	.popup {
+		width: 100%;
+		height: 100vh;
+
+		.popup-container {
+			width: 100%;
+			height: 100%;
+			display: grid;
+			grid-template-columns: 100%;
+			background: $lightgrey;
+		}
+
+		.details,
+		.amenities {
+			height: 100%;
+			margin: 15px 0 0 0;
+		}
+	}
 }
 
-@media screen and (max-width: 1100px) {
-	
+@media screen and (max-height: 650px) {
+	.popup {
+		width: 100%;
+		height: 100%;
+
+		.popup-container {
+			width: 100%;
+			height: auto;
+			display: grid;
+			grid-template-columns: 100%;
+			background: $lightgrey;
+		}
+
+		.details,
+		.amenities {
+			margin: 15px 0 0 0;
+		}
+	}
+}
+
+@media screen and (max-width: 850px) {
+	.popup {
+		width: 100%;
+
+		.popup-container {
+			width: 100%;
+
+			.listing {
+				font-size: 1rem;
+
+				.buttons {
+
+					button {
+						width: 75px;
+						height: 30px;
+						margin-right: 20px;
+						margin-bottom: 10px;
+						padding: 5px;
+					}
+				}
+			}
+
+			.about {
+				width: 100%;
+				margin: 0;
+				padding: 20px;
+			}
+		}
+
+		.form-container {
+			width: 100%;
+
+			.listing-form {
+				display: grid;
+				justify-items: center;
+				width: 100%;
+				border-radius: 5px;
+				background: $offwhite;
+			}
+		}
+	}
 }
 
 
